@@ -181,6 +181,9 @@ export default {
   loading: "Loading...",
   loading_more: "Loading more items...",
   login: "Log in",
+  m2m: "Many-to-Many (M2M)",
+  m2o: "Many-to-One (M2O)",
+  o2m: "One-to-Many (O2M)",
   name: "Name",
   name_field:
     "Let’s name this {field} field and configure how it will save data.",
@@ -252,6 +255,11 @@ export default {
   remove: "Remove",
   remove_related: "Remove Related Item",
   relationship: "Relationship",
+  relationship_setup:
+    "Since this is a relational field, we need to map-out the related fields.",
+  relationship_setup_copy:
+    "There are different types of relational data, this interface uses one called {relationship}.",
+  related_collection: "Related Collection",
   required: "Required",
   reset_preferences: "Reset all listing preferences",
   reset_password: "Reset Password",
@@ -264,6 +272,8 @@ export default {
   save_and_add: "Save and Add New",
   save_and_stay: "Save and Stay",
   save_as_copy: "Save as Copy",
+  save_and_explain: "Save and Explain",
+  save_and_explain_copy: "Please describe the changes",
   save_as_bookmark: "Save as Bookmark",
   schema: "Schema",
   search: "Search",
@@ -300,6 +310,7 @@ export default {
   sign_out_confirm_edits:
     "Are you sure you want to sign out? All unsaved changes will be lost.",
   to: "To",
+  this_collection: "This Collection",
   unsaved_changes_copy:
     "You have unsaved changes! Are you sure you want to leave this page?",
   user_directory: "User Directory",
