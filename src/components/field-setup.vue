@@ -73,14 +73,28 @@
 
       <form class="m2o" @submit.prevent v-if="selectedInterfaceInfo.relationship === 'm2o'">
         <p class="this title">{{ $t('this_collection') }}</p>
-        <v-simple-select class="this collection" disabled></v-simple-select>
-        <v-simple-select class="this field" disabled></v-simple-select>
+        <v-simple-select class="this collection" disabled :value="collectionInfo.collection">
+          <option :value="collectionInfo.collection" checked>{{ collectionInfo.collection }}</option>
+        </v-simple-select>
+        <v-simple-select class="this field" disabled :value="field">
+          <option :value="field" checked>{{ field }}</option>
+        </v-simple-select>
 
         <i class="material-icons">arrow_back</i>
 
         <p class="related title">{{ $t('related_collection') }}</p>
-        <v-simple-select class="related collection"></v-simple-select>
-        <v-simple-select class="related field"></v-simple-select>
+        <v-simple-select class="related collection" v-model="relationship.collection_b">
+          <option
+            v-for="({ collection }) in collections"
+            :key="collection"
+            :value="collection">{{ collection }}</option>
+        </v-simple-select>
+        <v-simple-select class="related field" v-model="relationship.field_b">
+          <option
+            v-for="({ field }) in fields(relationship.collection_b)"
+            :key="field"
+            :value="field">{{ field }}</option>
+        </v-simple-select>
       </form>
 
       <form @submit.prevent v-else-if="selectedInterfaceInfo.relationship === 'o2m'">
@@ -151,6 +165,10 @@ export default {
     fieldInfo: {
       type: Object,
       required: true
+    },
+    collectionInfo: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -175,7 +193,15 @@ export default {
       default_value: null,
       validation: null,
 
-      relationship: null
+      relationship: {
+        collection_a: this.collectionInfo.collection,
+        field_a: null,
+        collection_b: null,
+        field_b: null,
+        junction_collection: null,
+        junction_key_a: null,
+        junction_key_b: null
+      }
     };
   },
   computed: {
@@ -187,6 +213,11 @@ export default {
 
       return Object.assign({}, this.interfaces[this.interfaceName]);
     },
+    relational() {
+      if (!this.selectedInterfaceInfo) return null;
+
+      return this.selectedInterfaceInfo.relationship != null;
+    },
     interfaceOptions() {
       if (!this.selectedInterfaceInfo) return null;
       const options = this.selectedInterfaceInfo.options;
@@ -197,6 +228,9 @@ export default {
       );
 
       return { regular, advanced };
+    },
+    collections() {
+      return this.$store.state.collections;
     },
     schemaDisabled() {
       return !(this.interfaceName && this.interfaceName.length > 0);
@@ -289,6 +323,12 @@ export default {
   },
   created() {
     this.useFieldInfo();
+
+    // Set the defaults for the relationship picker
+    this.relationship.collection_b = Object.keys(this.collections)[0];
+    this.relationship.field_b = Object.keys(
+      this.fields(this.relationship.collection_b)
+    )[0];
   },
   watch: {
     fieldInfo() {
@@ -306,6 +346,8 @@ export default {
         .replace(/__+/g, "_") // Replace multiple _ with single _
         .replace(/^_+/, "") // Trim _ from start of text
         .replace(/_+$/, ""); // Trim _ from end of text
+
+      this.relationship.field_a = this.field;
     },
     type(datatype) {
       this.length = this.availableDatatypes[datatype];
@@ -335,6 +377,9 @@ export default {
           this.saveField();
           break;
       }
+    },
+    fields(collection) {
+      return this.collections[collection].fields;
     },
     saveField() {
       const fieldInfo = {
