@@ -80,6 +80,7 @@
 
     <v-field-setup
       v-if="editingField"
+      :collection-info="collectionInfo"
       :field-info="fieldBeingEdited"
       @close="editingField = false"
       @save="setFieldSettings" />

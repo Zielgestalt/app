@@ -1,6 +1,6 @@
 <template>
   <div class="v-simple-select">
-    <select @change="$emit('input', $event.target.value)" :value="value">
+    <select @change="$emit('input', $event.target.value)" :value="value" :disabled="disabled">
       <option disabled selected="value == null" value="">{{ placeholder || "--" }}</option>
       <slot />
     </select>
@@ -23,6 +23,10 @@ export default {
     placeholder: {
       type: String,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 };
@@ -67,6 +71,16 @@ export default {
 
   select:focus + .preview {
     border-color: var(--accent);
+  }
+
+  select[disabled] {
+    cursor: not-allowed;
+
+    & + .preview {
+      background-color: var(--lightest-gray);
+      border-color: var(--lighter-gray);
+      color: var(--light-gray);
+    }
   }
 }
 </style>

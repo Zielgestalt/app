@@ -34,8 +34,8 @@
       </div>
     </template>
 
-    <template slot="schema">
-      <h1 class="style-0">{{ $t("name_field", { field: "dropdown" }) }}</h1>
+    <template slot="schema" v-if="interfaceName">
+      <h1 class="style-0">{{ $t("name_field", { field: $helpers.formatTitle(interfaceName).toLowerCase() }) }}</h1>
       <p>{{ $t("intelligent_defaults") }}</p>
       <form @submit.prevent class="schema">
         <div class="name">
@@ -64,6 +64,43 @@
             <label class="toggle"><v-toggle v-model="hidden_list" />{{ $t("hidden_list") }}</label>
           </div>
         </details>
+      </form>
+    </template>
+
+    <template slot="relationship" v-if="selectedInterfaceInfo">
+      <h1 class="style-0">{{ $t('relationship_setup') }}</h1>
+      <p>{{ $t('relationship_setup_copy', { relationship: $t(selectedInterfaceInfo.relationship) }) }}</p>
+
+      <form class="m2o" @submit.prevent v-if="selectedInterfaceInfo.relationship === 'm2o'">
+        <p class="this title">{{ $t('this_collection') }}</p>
+        <v-simple-select class="this collection" disabled :value="collectionInfo.collection">
+          <option :value="collectionInfo.collection" checked>{{ collectionInfo.collection }}</option>
+        </v-simple-select>
+        <v-simple-select class="this field" disabled :value="field">
+          <option :value="field" checked>{{ field }}</option>
+        </v-simple-select>
+
+        <i class="material-icons">arrow_back</i>
+
+        <p class="related title">{{ $t('related_collection') }}</p>
+        <v-simple-select class="related collection" v-model="relationship.collection_b">
+          <option
+            v-for="({ collection }) in collections"
+            :key="collection"
+            :value="collection">{{ collection }}</option>
+        </v-simple-select>
+        <v-simple-select class="related field" v-model="relationship.field_b">
+          <option
+            v-for="({ field }) in fields(relationship.collection_b)"
+            :key="field"
+            :value="field">{{ field }}</option>
+        </v-simple-select>
+      </form>
+
+      <form @submit.prevent v-else-if="selectedInterfaceInfo.relationship === 'o2m'">
+      </form>
+
+      <form @submit.prevent v-else-if="selectedInterfaceInfo.relationship === 'm2m'">
       </form>
     </template>
 
@@ -128,6 +165,10 @@ export default {
     fieldInfo: {
       type: Object,
       required: true
+    },
+    collectionInfo: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -150,7 +191,17 @@ export default {
       hidden_list: false,
       length: null,
       default_value: null,
-      validation: null
+      validation: null,
+
+      relationship: {
+        collection_a: this.collectionInfo.collection,
+        field_a: null,
+        collection_b: null,
+        field_b: null,
+        junction_collection: null,
+        junction_key_a: null,
+        junction_key_b: null
+      }
     };
   },
   computed: {
@@ -162,6 +213,11 @@ export default {
 
       return Object.assign({}, this.interfaces[this.interfaceName]);
     },
+    relational() {
+      if (!this.selectedInterfaceInfo) return null;
+
+      return this.selectedInterfaceInfo.relationship != null;
+    },
     interfaceOptions() {
       if (!this.selectedInterfaceInfo) return null;
       const options = this.selectedInterfaceInfo.options;
@@ -172,6 +228,9 @@ export default {
       );
 
       return { regular, advanced };
+    },
+    collections() {
+      return this.$store.state.collections;
     },
     schemaDisabled() {
       return !(this.interfaceName && this.interfaceName.length > 0);
@@ -212,6 +271,9 @@ export default {
       };
     },
     tabs() {
+      const relational =
+        this.selectedInterfaceInfo && this.selectedInterfaceInfo.relationship;
+
       const tabs = {
         interface: {
           text: this.$t("interface")
@@ -222,13 +284,28 @@ export default {
         }
       };
 
+      if (relational) {
+        tabs.relationship = {
+          text: this.$t("relationship"),
+          disabled: this.schemaDisabled === true || !this.field
+        };
+      }
+
       if (
         this.interfaceName &&
-        Object.keys(this.interfaces[this.interfaceName].options).length > 0
+        Object.keys(this.selectedInterfaceInfo.options).length > 0
       ) {
+        let disabled = false;
+
+        if (relational) {
+          disabled = this.relationship === null;
+        } else {
+          disabled = this.schemaDisabled === true || !this.field;
+        }
+
         tabs.options = {
           text: this.$t("options"),
-          disabled: this.schemaDisabled === true || !this.field
+          disabled
         };
       }
 
@@ -246,6 +323,12 @@ export default {
   },
   created() {
     this.useFieldInfo();
+
+    // Set the defaults for the relationship picker
+    this.relationship.collection_b = Object.keys(this.collections)[0];
+    this.relationship.field_b = Object.keys(
+      this.fields(this.relationship.collection_b)
+    )[0];
   },
   watch: {
     fieldInfo() {
@@ -255,7 +338,6 @@ export default {
       this.type = Object.keys(this.availableDatatypes)[0];
     },
     field(val) {
-      // Based on https://gist.github.com/mathewbyrne/1280286
       this.field = val
         .toString()
         .toLowerCase()
@@ -264,6 +346,8 @@ export default {
         .replace(/__+/g, "_") // Replace multiple _ with single _
         .replace(/^_+/, "") // Trim _ from start of text
         .replace(/_+$/, ""); // Trim _ from end of text
+
+      this.relationship.field_a = this.field;
     },
     type(datatype) {
       this.length = this.availableDatatypes[datatype];
@@ -279,6 +363,13 @@ export default {
           if (this.hasOptions === false) {
             this.saveField();
           }
+          if (this.selectedInterfaceInfo.relationship) {
+            this.activeTab = "relationship";
+          } else {
+            this.activeTab = "options";
+          }
+          break;
+        case "relationship":
           this.activeTab = "options";
           break;
         case "options":
@@ -286,6 +377,9 @@ export default {
           this.saveField();
           break;
       }
+    },
+    fields(collection) {
+      return this.collections[collection].fields;
     },
     saveField() {
       const fieldInfo = {
@@ -304,7 +398,6 @@ export default {
         hidden_list: this.hidden_list,
         length: this.length,
         validation: this.validation
-        // translation: this.translation, < Haven't implemented that yet
       };
 
       this.saving = true;
@@ -461,5 +554,48 @@ summary {
   color: var(--accent);
   vertical-align: super;
   font-size: 7px;
+}
+
+.m2o {
+  margin-top: 40px;
+  display: grid;
+  grid-template-areas:
+    "this_title x rel_title"
+    "this_collection x rel_collection"
+    "this_field icon rel_field";
+  grid-template-columns: 1fr 20px 1fr;
+  grid-gap: 10px 0;
+  justify-content: center;
+  align-items: center;
+
+  .this.title {
+    grid-area: this_title;
+  }
+
+  .this.collection {
+    grid-area: this_collection;
+  }
+
+  .this.field {
+    grid-area: this_field;
+  }
+
+  .related.title {
+    grid-area: rel_title;
+  }
+
+  .related.collection {
+    grid-area: rel_collection;
+  }
+
+  .related.field {
+    grid-area: rel_field;
+  }
+
+  i {
+    grid-area: icon;
+    font-size: 20px;
+    color: var(--light-gray);
+  }
 }
 </style>

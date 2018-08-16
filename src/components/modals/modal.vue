@@ -288,6 +288,10 @@ export default {
     }
 
     &[disabled] {
+      &:hover {
+        color: var(--lighter-gray);
+      }
+
       color: var(--lighter-gray);
       cursor: not-allowed;
     }
