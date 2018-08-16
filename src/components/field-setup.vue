@@ -150,7 +150,9 @@ export default {
       hidden_list: false,
       length: null,
       default_value: null,
-      validation: null
+      validation: null,
+
+      relationship: null
     };
   },
   computed: {
@@ -212,6 +214,8 @@ export default {
       };
     },
     tabs() {
+      const relational = this.selectedInterfaceInfo && this.selectedInterfaceInfo.relationship;
+
       const tabs = {
         interface: {
           text: this.$t("interface")
@@ -222,13 +226,28 @@ export default {
         }
       };
 
+      if (relational) {
+        tabs.relationship = {
+          text: this.$t('relationship'),
+          disabled: this.schemaDisabled === true || !this.field
+        }
+      }
+
       if (
         this.interfaceName &&
-        Object.keys(this.interfaces[this.interfaceName].options).length > 0
+        Object.keys(this.selectedInterfaceInfo.options).length > 0
       ) {
+        let disabled = false;
+
+        if (relational) {
+          disabled = this.relationship === null;
+        } else {
+          disabled = this.schemaDisabled === true || !this.field
+        }
+
         tabs.options = {
           text: this.$t("options"),
-          disabled: this.schemaDisabled === true || !this.field
+          disabled
         };
       }
 
@@ -255,7 +274,6 @@ export default {
       this.type = Object.keys(this.availableDatatypes)[0];
     },
     field(val) {
-      // Based on https://gist.github.com/mathewbyrne/1280286
       this.field = val
         .toString()
         .toLowerCase()
@@ -279,8 +297,15 @@ export default {
           if (this.hasOptions === false) {
             this.saveField();
           }
-          this.activeTab = "options";
+          if (this.selectedInterfaceInfo.relationship) {
+            this.activeTab = "relationship";
+          } else {
+            this.activeTab = "options";
+          }
           break;
+        case "relationship":
+          this.activeTab = "options";
+          break
         case "options":
         default:
           this.saveField();
@@ -304,7 +329,6 @@ export default {
         hidden_list: this.hidden_list,
         length: this.length,
         validation: this.validation
-        // translation: this.translation, < Haven't implemented that yet
       };
 
       this.saving = true;
