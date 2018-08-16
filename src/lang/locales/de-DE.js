@@ -19,7 +19,8 @@ export default {
   about_directus: "Über Directus",
   activity: "Aktivität",
   activity_log: "Aktivitäten-Log",
-  activity_outside_directus: "Dieses Element wurde außerhalb von Directus erstellt.",
+  activity_outside_directus:
+    "Dieses Element wurde außerhalb von Directus erstellt.",
   admin_email: "Admin E-Mail",
   admin_password: "Admin Passwort",
   additional_info: "Weitergehende Infos",
@@ -48,7 +49,8 @@ export default {
   change_project: "Project wechseln",
   choose_one: "Bitte wählen",
   choose_project: "Project auswählen",
-  choose_interface: "Wähle einen Feldtyp über den die Daten gepflegt werden sollen.",
+  choose_interface:
+    "Wähle einen Feldtyp über den die Daten gepflegt werden sollen.",
   click_to_toggle_all_none: "Klicken um die ganze Spalte an- und auszuschalten",
   connection: "Verbindung",
   collection: "Kollektion",
@@ -57,7 +59,8 @@ export default {
   collection_names_cannot_be_changed:
     "Namen von Kollektionen können leider noch nicht bearbeitet werden.",
   collections: "Kollektionen",
-  collection_count: "Keine Kollektionen | Eine Kollektion | {count} Kollektionen",
+  collection_count:
+    "Keine Kollektionen | Eine Kollektion | {count} Kollektionen",
   "collections-directus_files": "Dateien",
   "collections-directus_users": "Benutzer",
   "collections-directus_activity": "Aktivität",
@@ -108,7 +111,8 @@ export default {
   email_address: "E-Mail-Adresse",
   email: "E-Mail",
   empty_collection: "Leere Kollektion",
-  empty_collection_body: "Bisher gibt es noch keine Elemente in dieser Kollektion",
+  empty_collection_body:
+    "Bisher gibt es noch keine Elemente in dieser Kollektion",
   enable_manual_sorting: "Erlaube manuelles Sortieren",
   enter_value: "Wert eingeben",
   enter_collection_name: "Kollektionsnamen eingeben...",
@@ -133,7 +137,8 @@ export default {
   field_updated: "Feld {field} aktualisiert",
   field_removed: "Feld {field} gelöscht",
   fields: "Felder",
-  fields_are_saved_automatically: "Feldeinstellungen werden automatisch gespeichert",
+  fields_are_saved_automatically:
+    "Feldeinstellungen werden automatisch gespeichert",
   file: "Datei",
   file_library: "Datei-Browser",
   file_upload: "Datei(en) hochladen",
@@ -170,7 +175,8 @@ export default {
     "Keine gefilterten Elemente | Ein gefiltertes Element | {count} gefiltertes Element",
   item_deleted: "Element gelöscht",
   item_saved: "Element gespeichert",
-  extension_error: "Es ist ein Problem beim Laden der {ext} Erweiterung aufgetreten.",
+  extension_error:
+    "Es ist ein Problem beim Laden der {ext} Erweiterung aufgetreten.",
   latency: "Latenz",
   learn_more: "Mehr erfahren",
   leave_comment: "Kommentieren...",
@@ -182,8 +188,7 @@ export default {
   loading_more: "Weitere Elemente werden geladen...",
   login: "Log in",
   name: "Name",
-  name_field:
-    "Gib diesem {field}-Feld einen Namen und konfiguriere es.",
+  name_field: "Gib diesem {field}-Feld einen Namen und konfiguriere es.",
   navigate_changes:
     "Bist Du sicher, dass Du diese Seite verlassen möchtest? Alle Änderungen gehen dabei verloren.",
   new: "Neu",
@@ -193,16 +198,17 @@ export default {
   not_contains: "Enthält nicht",
   note: "Notiz",
   no_results: "Keine Ergebnisse",
-  no_results_body: "Keine Kollektions-Element bei den aktuellen Filtereinstellungen",
+  no_results_body:
+    "Keine Kollektions-Element bei den aktuellen Filtereinstellungen",
   no_collections: "Keine Kollektionen",
   no_collections_body: "Es wurden noch keine Kollektionen angelegt",
   no_fields: "Keine Felder",
-  no_fields_body:
-    "In dieser Kollektion wurden noch keine Felder angelegt",
+  no_fields_body: "In dieser Kollektion wurden noch keine Felder angelegt",
   no_files: "Keine Dateien",
   no_files_body: "Es wurden noch keine Dateien hochgeladen",
   page_not_found: "Seite nicht gefunden",
-  page_not_found_body: "Die Seite, nach der Du gesucht hast, wurde nicht gefunden.",
+  page_not_found_body:
+    "Die Seite, nach der Du gesucht hast, wurde nicht gefunden.",
   permissions: "Berechtigungen",
   name_bookmark: "Möchtest Du diesen Bookmark benennen?",
   next: "Weiter",
@@ -222,7 +228,8 @@ export default {
   operator: "Anwender",
   options: "Optionen",
   password: "Passwort",
-  password_reset_sent: "Eine E-Mail zum Zurücksetzen des Passworts wurde an {email} gesendet",
+  password_reset_sent:
+    "Eine E-Mail zum Zurücksetzen des Passworts wurde an {email} gesendet",
   permission_states: {
     none: "Keine",
     mine: "Nur meine",
@@ -304,7 +311,8 @@ export default {
     "Es gibt ungespeicherte Änderungen! Bist Du sicher, dass Du diese Seite verlassen möchtest?",
   user_directory: "Benutzerverzeichnis",
   update: "Update",
-  update_confirm: "Bist Du sicher, dass Du {count} Elemente aktualisieren möchtest?",
+  update_confirm:
+    "Bist Du sicher, dass Du {count} Elemente aktualisieren möchtest?",
   unique: "Unique",
   user_edit_warning:
     "{first_name} {last_name} bearbeitet dieses Element ebenfalls. Bitte sprecht Euch ab, damit deine Änderungen nicht verloren gehen.",
