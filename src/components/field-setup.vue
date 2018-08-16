@@ -67,6 +67,29 @@
       </form>
     </template>
 
+    <template slot="relationship" v-if="selectedInterfaceInfo">
+      <h1 class="style-0">{{ $t('relationship_setup') }}</h1>
+      <p>{{ $t('relationship_setup_copy', { relationship: $t(selectedInterfaceInfo.relationship) }) }}</p>
+
+      <form class="m2o" @submit.prevent v-if="selectedInterfaceInfo.relationship === 'm2o'">
+        <p class="this title">{{ $t('this_collection') }}</p>
+        <v-simple-select class="this collection" disabled></v-simple-select>
+        <v-simple-select class="this field" disabled></v-simple-select>
+
+        <i class="material-icons">arrow_back</i>
+
+        <p class="related title">{{ $t('related_collection') }}</p>
+        <v-simple-select class="related collection"></v-simple-select>
+        <v-simple-select class="related field"></v-simple-select>
+      </form>
+
+      <form @submit.prevent v-else-if="selectedInterfaceInfo.relationship === 'o2m'">
+      </form>
+
+      <form @submit.prevent v-else-if="selectedInterfaceInfo.relationship === 'm2m'">
+      </form>
+    </template>
+
     <template slot="options">
       <h1 class="style-0">{{ $t('almost_done_options') }}</h1>
       <p>{{ $t('almost_done_copy') }}</p>
@@ -214,7 +237,8 @@ export default {
       };
     },
     tabs() {
-      const relational = this.selectedInterfaceInfo && this.selectedInterfaceInfo.relationship;
+      const relational =
+        this.selectedInterfaceInfo && this.selectedInterfaceInfo.relationship;
 
       const tabs = {
         interface: {
@@ -228,9 +252,9 @@ export default {
 
       if (relational) {
         tabs.relationship = {
-          text: this.$t('relationship'),
+          text: this.$t("relationship"),
           disabled: this.schemaDisabled === true || !this.field
-        }
+        };
       }
 
       if (
@@ -242,7 +266,7 @@ export default {
         if (relational) {
           disabled = this.relationship === null;
         } else {
-          disabled = this.schemaDisabled === true || !this.field
+          disabled = this.schemaDisabled === true || !this.field;
         }
 
         tabs.options = {
@@ -305,7 +329,7 @@ export default {
           break;
         case "relationship":
           this.activeTab = "options";
-          break
+          break;
         case "options":
         default:
           this.saveField();
@@ -485,5 +509,48 @@ summary {
   color: var(--accent);
   vertical-align: super;
   font-size: 7px;
+}
+
+.m2o {
+  margin-top: 40px;
+  display: grid;
+  grid-template-areas:
+    "this_title x rel_title"
+    "this_collection x rel_collection"
+    "this_field icon rel_field";
+  grid-template-columns: 1fr 20px 1fr;
+  grid-gap: 10px 0;
+  justify-content: center;
+  align-items: center;
+
+  .this.title {
+    grid-area: this_title;
+  }
+
+  .this.collection {
+    grid-area: this_collection;
+  }
+
+  .this.field {
+    grid-area: this_field;
+  }
+
+  .related.title {
+    grid-area: rel_title;
+  }
+
+  .related.collection {
+    grid-area: rel_collection;
+  }
+
+  .related.field {
+    grid-area: rel_field;
+  }
+
+  i {
+    grid-area: icon;
+    font-size: 20px;
+    color: var(--light-gray);
+  }
 }
 </style>
