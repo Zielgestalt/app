@@ -4,8 +4,9 @@
   const config = {
     // The API URLs the user can connect to using this instance of the application.
     // Object values are used as project name in the app
+    // Don't forget to add the API environment!
     api: {
-      'https://demo-api.directus.app': 'Directus Demo API'
+      'https://demo-api.directus.app/_/': 'Directus Demo API'
     },
 
     // Allow the user to connect to any API by entering a URL in a text field

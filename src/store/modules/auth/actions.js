@@ -33,9 +33,16 @@ function extractHostname(url) {
 export function login({ commit }, credentials) {
   commit(LOGIN_PENDING);
 
+  const { url } = credentials;
+  const parts = url.split("/");
+  const env = parts.pop() || parts.pop();
+  const newUrl = parts.join("/");
+
   return api
     .login({
       ...credentials,
+      url: newUrl,
+      env,
       persist: true
     })
     .then(info => {

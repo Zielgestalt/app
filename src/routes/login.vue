@@ -13,10 +13,10 @@
         <label class="project-switcher">
           <select v-model="selectedUrl" :disabled="loading">
             <option
-              v-for="(name, url) in urls"
-              :value="url"
-              :key="url"
-              :checked="url === storeUrl">
+              v-for="(name, u) in urls"
+              :value="u"
+              :key="u"
+              :checked="u === url">
               {{ name }}
             </option>
             <option
@@ -141,7 +141,8 @@ export default {
   },
   data() {
     return {
-      selectedUrl: this.$store.state.auth.url,
+      selectedUrl:
+        this.$store.state.auth.url + "/" + this.$store.state.auth.env,
 
       url: null,
       email: null,
@@ -178,7 +179,7 @@ export default {
       return this.$store.state.auth.error;
     },
     storeUrl() {
-      return this.$store.state.auth.url;
+      return this.$store.state.auth.url + "/" + this.$store.state.auth.env;
     },
     errorType() {
       if (!this.error) return;
@@ -228,7 +229,7 @@ export default {
       this.checkUrl();
     }
 
-    const lastUsedURL = this.$store.state.auth.url;
+    const lastUsedURL = this.storeUrl;
     this.url =
       lastUsedURL || Object.keys(window.__DirectusConfig__.api)[0] || "";
 
@@ -263,7 +264,7 @@ export default {
         this.loading = true;
 
         this.$axios
-          .post(this.url + "/_/auth/password/request", {
+          .post(this.url + "/auth/password/request", {
             email: this.email
           })
           .then(() => {
@@ -325,8 +326,12 @@ export default {
       this.error = null;
       this.notInstalled = false;
 
+      const parts = this.url.split("/");
+      parts.pop() || parts.pop();
+      const newUrl = parts.join("/");
+
       this.$axios
-        .get(this.url + "/server/ping")
+        .get(newUrl + "/server/ping")
         .then(() => {
           this.exists = true;
           this.checkingExistence = false;
@@ -344,7 +349,12 @@ export default {
 
       const scopedAPI = new sdk();
 
-      scopedAPI.url = this.url;
+      const parts = this.url.split("/");
+      const env = parts.pop() || parts.pop();
+      const newUrl = parts.join("/");
+
+      scopedAPI.env = env;
+      scopedAPI.url = newUrl;
 
       scopedAPI
         .getThirdPartyAuthProviders()
