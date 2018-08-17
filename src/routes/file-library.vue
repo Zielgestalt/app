@@ -345,7 +345,7 @@ export default {
       this.$store.dispatch("loadingStart", { id });
 
       this.$api
-        .deleteItems(this.collection, this.selection)
+        .deleteItems(this.collection, this.selection.map(item => item.id))
         .then(() => {
           this.$store.dispatch("loadingFinished", id);
           this.$refs.listing.getItems();

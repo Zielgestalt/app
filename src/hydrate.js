@@ -1,4 +1,5 @@
 import store from "./store/";
+import { loadLanguageAsync, availableLanguages } from "./lang/";
 import { STORE_HYDRATED, HYDRATING_FAILED } from "./store/mutation-types";
 import { startPolling } from "./polling";
 import startIdleTracking from "./idle";
@@ -25,6 +26,10 @@ export default function hydrateStore() {
             "--accent",
             `var(--${customColor}-600)`
           );
+        }
+
+        if (availableLanguages.includes(store.state.currentUser.locale)) {
+          loadLanguageAsync(store.state.currentUser.locale);
         }
 
         store.commit(STORE_HYDRATED, new Date());

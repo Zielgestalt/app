@@ -1,7 +1,7 @@
 <template>
   <v-not-found v-if="notFound" />
   <div class="route-item-listing" v-else>
-    <v-header info-toggle>
+    <v-header info-toggle :breadcrumb="breadcrumb">
       <template slot="title">
         <button
           :class="currentBookmark ? 'active' : null"
@@ -143,6 +143,29 @@ export default {
     };
   },
   computed: {
+    breadcrumb() {
+      const breadcrumb = [];
+
+      if (this.collection.startsWith("directus_")) {
+        breadcrumb.push({
+          name: this.$helpers.formatTitle(this.collection.substr(9)),
+          path: `/${this.collection.substring(9)}`
+        });
+      } else {
+        breadcrumb.push(
+          {
+            name: this.$t("collections"),
+            path: "/collections"
+          },
+          {
+            name: this.$t(`collections-${this.collection}`),
+            path: `/collections/${this.collection}`
+          }
+        );
+      }
+
+      return breadcrumb;
+    },
     fields() {
       const fields = this.$store.state.collections[this.collection].fields;
       return Object.values(fields).map(field => ({

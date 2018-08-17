@@ -54,4 +54,4 @@ export function loadLanguageAsync(lang) {
 }
 
 // Array of available languages in the system
-export const availableLanguages = ["en-US"];
+export const availableLanguages = ["en-US", "de-DE"];

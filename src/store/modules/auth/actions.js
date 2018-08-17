@@ -1,4 +1,5 @@
 import jwtPayload from "@rijk/jwt-payload";
+import { i18n } from "../../../lang/";
 import api from "../../../api";
 import router from "../../../router";
 import { resetState } from "../../index";
@@ -93,6 +94,7 @@ export function logout({ commit }, error) {
     stopPolling();
     api.logout();
     resetState();
+    i18n.locale = "en-US";
     router.push("/login");
     commit(LOGOUT, error);
     resolve();
