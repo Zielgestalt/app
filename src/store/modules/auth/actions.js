@@ -1,4 +1,6 @@
 import jwtPayload from "@rijk/jwt-payload";
+import { mapKeys } from "lodash";
+import formatTitle from "@directus/format-title";
 import { i18n } from "../../../lang/";
 import api from "../../../api";
 import router from "../../../router";
@@ -15,6 +17,10 @@ import {
 import { stopPolling } from "../../../polling";
 
 const config = window.__DirectusConfig__; // eslint-disable-line
+const urls = mapKeys(
+  config.api,
+  (val, key) => (key.endsWith("/") ? key : key + "/")
+);
 
 function extractHostname(url) {
   let hostname;
@@ -48,7 +54,9 @@ export function login({ commit }, credentials) {
     .then(info => {
       commit(LOGIN_SUCCESS, {
         ...info,
-        projectName: config.api[info.url] || extractHostname(info.url)
+        projectName:
+          urls[info.url + "/" + info.env + "/"] ||
+          formatTitle(extractHostname(info.url))
       });
     })
     .catch(error => {
@@ -110,7 +118,11 @@ export function logout({ commit }, error) {
 
 export function changeAPI({ commit, dispatch }, url) {
   dispatch("logout").then(() => {
-    commit(CHANGE_API, url);
+    const parts = url.split("/");
+    const env = parts.pop() || parts.pop();
+    const newUrl = parts.join("/");
+
+    commit(CHANGE_API, { url: newUrl, env });
   });
 }
 

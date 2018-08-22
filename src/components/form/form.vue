@@ -1,12 +1,12 @@
 <template>
   <v-error
-    v-if="fieldsGrouped.length === 0"
+    v-if="groupedFields.length === 0"
     :title="$t('no_fields')"
     :body="$t('no_fields_body')"
     icon="error_outline" />
   <form v-else class="v-form flex-group">
     <div
-      v-for="field in fieldsGrouped"
+      v-for="field in groupedFields"
       :class="[
         isGroup(field) ? null : `col-${field.view_width || 4}`,
         isGroup(field) ? 'group' : 'field'
@@ -81,7 +81,7 @@ export default {
     collection() {
       return Object.values(this.fields)[0].collection;
     },
-    fieldsGrouped() {
+    groupedFields() {
       const fieldsArray = Object.values(this.fields).filter(
         field =>
           this.permissions.read_field_blacklist.includes(field.field) === false

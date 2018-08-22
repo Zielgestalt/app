@@ -3,6 +3,7 @@
     :is="componentName"
     :input-name="id"
     :name="name"
+    :id="name"
     :value="value"
     :type="typeOrDefault"
     :length="lengthOrDefault"
@@ -11,7 +12,7 @@
     :loading="loading"
     :options="optionsWithDefaults"
     :new-item="newItem"
-    :relationship="relationship"
+    :relation="relation"
     :fields="fields"
     :values="values"
     class="v-ext-input"
@@ -71,7 +72,7 @@ export default {
       type: Boolean,
       default: false
     },
-    relationship: {
+    relation: {
       type: Object,
       default: null
     },

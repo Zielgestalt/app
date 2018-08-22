@@ -12,12 +12,12 @@
       <v-signal class="icon" />
       <span class="no-wrap">{{ $store.state.auth.projectName }}</span>
       <i v-if="Object.keys(urls).length > 1" class="material-icons chevron">arrow_drop_down</i>
-      <select v-if="Object.keys(urls).length > 1" :value="$store.state.auth.url" @change="changeUrl">
+      <select v-if="Object.keys(urls).length > 1" :value="currentUrl" @change.prevent="changeUrl">
         <option
           v-for="(name, url) in urls"
           :key="name + url"
           :value="url"
-          :checked="url === $store.state.auth.url">{{ name }}</option>
+          :checked="url === currentUrl || url + '/' === currentUrl">{{ name }}</option>
       </select>
     </div>
   </div>
@@ -38,7 +38,15 @@ export default {
   },
   computed: {
     urls() {
-      return window.__DirectusConfig__.api;
+      return this.$lodash.mapKeys(
+        window.__DirectusConfig__.api,
+        (val, key) => (key.endsWith("/") === false ? key + "/" : key)
+      );
+    },
+    currentUrl() {
+      return (
+        this.$store.state.auth.url + "/" + this.$store.state.auth.env + "/"
+      );
     }
   },
   methods: {

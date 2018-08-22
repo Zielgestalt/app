@@ -24,7 +24,7 @@
             :options="field.options"
             :type="field.type"
             :value="values[field.field]"
-            :relationship="field.relationship"
+            :relation="relation"
             :fields="fields"
             :values="values"
             @input="readonly ? null : $emit('stage-value', {
@@ -91,6 +91,15 @@ export default {
         return interfaceMeta.hideLabel;
 
       return false;
+    },
+    relation() {
+      const { collection, field, type } = this.field;
+
+      if (type.toLowerCase() === "m2o")
+        return this.$store.getters.m2o(collection, field);
+      if (type.toLowerCase() === "o2m")
+        return this.$store.getters.o2m(collection, field);
+      return null;
     }
   }
 };

@@ -53,6 +53,9 @@ export const LOADING_FINISHED = "⏳ Remove Request from Queue";
 export const SET_CURRENT_USER = "👨🏻‍💻✅ Set Current User";
 export const UPDATE_CURRENT_USER = "👨🏻‍💻 Current User Updated";
 
+// Relations
+export const SET_RELATIONS = "❤️ Set Relations";
+
 // Settings
 export const SET_SETTINGS = "⚙️ Set Global Settings";
 

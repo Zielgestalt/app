@@ -242,11 +242,12 @@ export default {
         });
     },
     select(primaryKeys) {
-      const itemsByKey = this.$lodash.keyBy(
-        this.items.data,
-        this.primaryKeyField
+      const items = [...this.items.data, ...this.selection];
+
+      this.$emit(
+        "select",
+        items.filter(item => primaryKeys.includes(item[this.primaryKeyField]))
       );
-      this.$emit("select", primaryKeys.map(key => itemsByKey[key]));
     },
     saveItems(data) {
       if (!data) return;
@@ -378,7 +379,7 @@ export default {
     },
     formatParams() {
       let params = {
-        fields: "*.*.*",
+        fields: "*.*",
         meta: "total_count,result_count",
         limit: 50,
         offset: 50 * this.items.page

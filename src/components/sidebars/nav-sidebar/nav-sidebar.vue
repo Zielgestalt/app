@@ -15,6 +15,7 @@
         <section class="content">
           <project-switcher />
           <nav-menu
+            v-if="collectionNames && collectionNames.length > 0"
             :title="$t('collections')"
             :links="collectionNames.map(name => ({
               path: `/collections/${name}`,

@@ -180,8 +180,6 @@ export default {
     return {
       saving: false,
 
-      relations: [],
-
       notFound: false,
       error: false,
 
@@ -335,35 +333,11 @@ export default {
       return this.primaryKey === "+";
     },
     fields() {
-      const getRelationship = field => {
-        const fieldID = field.field;
-
-        const fieldRelations = this.relations
-          .filter(relation => {
-            return relation.field_a === fieldID;
-          })
-          .map(relation => {
-            return {
-              collection_a: relation.collection_a,
-              field_a: relation.field_a,
-              collection_b: relation.collection_b,
-              field_b: relation.field_b,
-              junction_key_a: relation.junction_key_a,
-              junction_collection: relation.junction_collection,
-              junction_key_b: relation.junction_key_b
-            };
-          });
-
-        if (fieldRelations.length === 0) return null;
-        return fieldRelations[0];
-      };
-
       const fields = this.$store.state.collections[this.collection].fields;
 
       return mapValues(fields, field => ({
         ...field,
-        name: formatTitle(field.field),
-        relationship: getRelationship(field)
+        name: formatTitle(field.field)
       }));
     }
   },
@@ -647,7 +621,7 @@ export default {
 
           return Promise.all([
             this.$api.getItem(this.collection, this.primaryKey, {
-              fields: "*.*.*"
+              fields: "*.*"
             }),
             this.fetchActivity()
           ]);
@@ -679,33 +653,30 @@ export default {
       return next(vm => (vm.$data.notFound = true));
     }
 
+    if (isNew) {
+      store.dispatch("startEditing", {
+        collection: collection,
+        primaryKey: primaryKey,
+        savedValues: {}
+      });
+      next();
+      return;
+    }
+
     const id = shortid.generate();
     store.dispatch("loadingStart", { id });
 
-    return Promise.all([
-      api.getCollectionRelations(collection),
-
-      isNew ? null : api.getItem(collection, primaryKey, { fields: "*.*.*" })
-    ])
-      .then(([relations, item]) => {
+    return api
+      .getItem(collection, primaryKey, { fields: "*.*" })
+      .then(res => res.data)
+      .then(item => {
         store.dispatch("loadingFinished", id);
-        return {
-          relations: relations[0].data,
-          item: (item && item.data) || null
-        };
-      })
-      .then(({ relations, item }) => {
         store.dispatch("startEditing", {
           collection: collection,
           primaryKey: primaryKey,
-          savedValues: isNew ? {} : item
+          savedValues: item
         });
-        return { relations };
-      })
-      .then(({ relations }) => {
-        return next(vm => {
-          vm.$data.relations = relations;
-        });
+        next();
       })
       .catch(error => {
         EventBus.emit("error", {
@@ -727,34 +698,29 @@ export default {
       return next();
     }
 
+    if (isNew) {
+      this.$store.dispatch("startEditing", {
+        collection: collection,
+        primaryKey: primaryKey,
+        savedValues: {}
+      });
+      next();
+      return;
+    }
+
     const id = this.$helpers.shortid.generate();
     this.$store.dispatch("loadingStart", { id });
 
-    return Promise.all([
-      this.$api.getCollectionRelations(collection),
-
-      isNew
-        ? null
-        : this.$api.getItem(collection, primaryKey, { fields: "*.*.*" })
-    ])
-      .then(([relations, item]) => {
+    return this.$api
+      .getItem(collection, primaryKey, { fields: "*.*" })
+      .then(res => res.data)
+      .then(item => {
         this.$store.dispatch("loadingFinished", id);
-
-        return {
-          relations: relations[0].data,
-          item: (item && item.data) || null
-        };
-      })
-      .then(({ relations, item }) => {
         this.$store.dispatch("startEditing", {
           collection: collection,
           primaryKey: primaryKey,
-          savedValues: isNew ? {} : item
+          savedValues: item
         });
-        return { relations };
-      })
-      .then(data => {
-        this.relations = data.relations;
         next();
       })
       .catch(error => {
@@ -763,7 +729,7 @@ export default {
           error
         });
         this.error = error;
-        return next();
+        next();
       });
   },
   beforeRouteLeave(to, from, next) {

@@ -16,7 +16,7 @@
               v-for="(name, u) in urls"
               :value="u"
               :key="u"
-              :checked="u === url">
+              :checked="u === url || u === url + '/'">
               {{ name }}
             </option>
             <option
@@ -112,7 +112,7 @@
               <li
                 v-for="provider in thirdPartyAuthProviders"
                 :key="provider.name">
-                <a v-tooltip.bottom="$helpers.formatTitle(provider.name)" :href="url + '/_/auth/sso/' + provider.name">
+                <a v-tooltip.bottom="$helpers.formatTitle(provider.name)" :href="url + '/auth/sso/' + provider.name">
                   <img
                     :alt="provider.name"
                     :src="provider.icon">
@@ -142,7 +142,7 @@ export default {
   data() {
     return {
       selectedUrl:
-        this.$store.state.auth.url + "/" + this.$store.state.auth.env,
+        this.$store.state.auth.url + "/" + this.$store.state.auth.env + "/",
 
       url: null,
       email: null,
@@ -166,7 +166,10 @@ export default {
   computed: {
     urls() {
       if (!window.__DirectusConfig__) return;
-      return window.__DirectusConfig__.api;
+      return this.$lodash.mapKeys(
+        window.__DirectusConfig__.api,
+        (val, key) => (key.endsWith("/") === false ? key + "/" : key)
+      );
     },
     allowOther() {
       if (!window.__DirectusConfig__) return;
@@ -232,6 +235,8 @@ export default {
     const lastUsedURL = this.storeUrl;
     this.url =
       lastUsedURL || Object.keys(window.__DirectusConfig__.api)[0] || "";
+
+    if (this.url.endsWith("/") === false) this.url = this.url + "/";
 
     this.trySSOLogin();
   },
@@ -381,9 +386,9 @@ export default {
       if (this.$route.query.error) {
         this.error = this.$route.query.error;
 
-        var uri = window.location.toString();
+        const uri = window.location.toString();
         if (uri.indexOf("?") > 0) {
-          var clean_uri = uri.substring(0, uri.indexOf("?"));
+          const clean_uri = uri.substring(0, uri.indexOf("?"));
           window.history.replaceState({}, document.title, clean_uri);
         }
 

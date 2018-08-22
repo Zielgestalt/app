@@ -7,6 +7,7 @@ import extensions from "./modules/extensions";
 import edits from "./modules/edits";
 import permissions from "./modules/permissions";
 import users from "./modules/users";
+import relations from "./modules/relations";
 
 import state from "./state";
 import * as actions from "./actions";
@@ -17,7 +18,13 @@ Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== "production"; // eslint-disable-line no-undef
 
-const persistedPaths = ["auth.token", "auth.url", "auth.projectName", "edits"];
+const persistedPaths = [
+  "auth.token",
+  "auth.url",
+  "auth.env",
+  "auth.projectName",
+  "edits"
+];
 
 const store = new Vuex.Store({
   state,
@@ -30,7 +37,8 @@ const store = new Vuex.Store({
     extensions,
     edits,
     permissions,
-    users
+    users,
+    relations
   },
   plugins: [
     createPersistedState({

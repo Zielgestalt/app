@@ -170,7 +170,10 @@ export default {
       ];
     },
     collectionInfo() {
-      return this.$store.state.collections[this.collection];
+      return {
+        ...this.$store.state.collections[this.collection],
+        ...this.edits
+      };
     },
     fieldsWithSort() {
       return this.fields.map((field, index) => ({

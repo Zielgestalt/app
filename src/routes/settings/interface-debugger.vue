@@ -18,7 +18,7 @@
         :loading="loading"
         :options="options"
         :new-item="newItem"
-        :relationship="relationship"
+        :relation="relation"
         :fields="fields"
         :values="values" />
     </div>

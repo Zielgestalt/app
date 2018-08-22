@@ -47,8 +47,9 @@ const mutations = {
     state.error = null;
   },
 
-  [CHANGE_API](state, url) {
+  [CHANGE_API](state, { url, env }) {
     state.url = url;
+    state.env = env;
   }
 };
 
