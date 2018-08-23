@@ -586,26 +586,24 @@ export default {
 
 .loader {
   div {
-    animation: bounce 2s var(--transition) infinite alternate;
+    animation: bounce 1s var(--transition) infinite alternate;
   }
 
   $elements: 50;
   @for $i from 0 to $elements {
     div:nth-child(#{$i + 1}) {
-      animation-delay: $i * 200ms;
+      animation-delay: $i * 100ms;
     }
   }
 }
 
 @keyframes bounce {
   from {
-    background-color: var(--white);
-    border-color: var(--lightest-gray);
+    border-color: var(--lighter-gray);
   }
 
   to {
-    background-color: var(--lightest-gray);
-    border-color: var(--white);
+    border-color: var(--lightest-gray);
   }
 }
 

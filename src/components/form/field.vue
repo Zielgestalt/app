@@ -114,10 +114,13 @@ label,
 legend {
   margin-bottom: 10px;
   text-transform: none;
-  color: var(--dark-gray);
-  font-size: 1rem;
-  line-height: 1.18;
-  font-weight: 500;
+  color: var(--darker-gray);
+  font-size: 1.2rem;
+  line-height: 1.1;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 fieldset,

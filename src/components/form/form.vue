@@ -161,21 +161,25 @@ export default {
     }
 
     .col-1 {
+      max-width: var(--width-small);
       flex-basis: var(--width-small);
       margin-right: 20px;
     }
 
     .col-2 {
+      max-width: var(--width-normal);
       flex-basis: var(--width-normal);
       margin-right: 20px;
     }
 
     .col-3 {
+      max-width: var(--width-large);
       flex-basis: var(--width-large);
       margin-right: 20px;
     }
 
     .col-4 {
+      max-width: var(--width-x-large);
       flex-basis: var(--width-x-large);
     }
   }

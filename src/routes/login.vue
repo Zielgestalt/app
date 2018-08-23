@@ -182,6 +182,7 @@ export default {
       return this.$store.state.auth.error;
     },
     storeUrl() {
+      if (!this.$store.state.auth.url) return null;
       return this.$store.state.auth.url + "/" + this.$store.state.auth.env;
     },
     errorType() {

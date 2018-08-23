@@ -8,6 +8,14 @@
     <p>Try again later or <router-link to="/logout">login to another instance</router-link>.</p>
   </div>
 
+  <div v-else-if="configError" class="error">
+    <v-error
+      icon="settings"
+      :title="$t('config_error')"
+      :body="$t('config_error_copy')"
+      color="warning" />
+  </div>
+
   <div v-else-if="!publicRoute">
     <div v-if="hydrated" class="directus">
       <v-nav-sidebar />
@@ -47,6 +55,9 @@ export default {
     },
     hydratingError() {
       return this.$store.state.hydratingError;
+    },
+    configError() {
+      return window.__DirectusConfig__ == null;
     }
   },
   watch: {

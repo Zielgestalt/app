@@ -401,9 +401,21 @@ export default {
       if (params.fields) {
         // Make sure all selected fields are retrieved one level deep (to be able to show relational
         //  items)
-        params.fields = params.fields
-          .split(",")
-          .map(field => (field.endsWith(".*") ? field : `${field}.*`));
+        params.fields = params.fields.split(",").map(field => {
+          if (field === "*.*") return field;
+
+          const fieldInfo = this.fields[field];
+
+          if (
+            fieldInfo.type.toLowerCase() === "m2o" ||
+            fieldInfo.type.toLowerCase() === "o2m" ||
+            fieldInfo.type.toLowerCase() === "m2m"
+          ) {
+            return field.endsWith(".*") ? field : field + ".*";
+          }
+
+          return field;
+        });
 
         // Make sure the sort field gets fetched too
         if (this.sortField) {

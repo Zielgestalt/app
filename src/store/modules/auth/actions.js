@@ -17,10 +17,9 @@ import {
 import { stopPolling } from "../../../polling";
 
 const config = window.__DirectusConfig__; // eslint-disable-line
-const urls = mapKeys(
-  config.api,
-  (val, key) => (key.endsWith("/") ? key : key + "/")
-);
+const urls = config
+  ? mapKeys(config.api, (val, key) => (key.endsWith("/") ? key : key + "/"))
+  : null;
 
 function extractHostname(url) {
   let hostname;
