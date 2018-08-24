@@ -54,6 +54,7 @@ export default {
   click_to_toggle_all_none: "Klicken um die ganze Spalte an- und auszuschalten",
   connection: "Verbindung",
   collection: "Kollektion",
+  collections_and_fields: "Kollektionen & Felder",
   collection_updated: "Kollektion {collection} aktualisiert",
   collection_removed: "Kollektion {collection} entfernt",
   collection_names_cannot_be_changed:
@@ -68,6 +69,9 @@ export default {
   comments: "Kommentare",
   coming_soon: "Coming soon",
   contains: "Enthält",
+  config_error: "Keine App-Konfiguration vorhanden",
+  config_error_copy:
+    "Bitte stelle sicher, dass du die Konfigurationsdatei der App erstellt hast.",
   collection_contains_items: "{collection} enthält {count} Elemente",
   currently_selected: "Aktuelle Auswahl: {thing}",
   create: "Erstellen",
@@ -177,6 +181,9 @@ export default {
   item_saved: "Element gespeichert",
   extension_error:
     "Es ist ein Problem beim Laden der {ext} Erweiterung aufgetreten.",
+  extensions_missing: "Keine Erweiterungen gefunden",
+  extensions_missing_copy:
+    "Bitte stelle sicher, dass du die System-Erweiterungen installiert hast.",
   latency: "Latenz",
   learn_more: "Mehr erfahren",
   leave_comment: "Kommentieren...",
@@ -187,6 +194,9 @@ export default {
   loading: "Wird geladen...",
   loading_more: "Weitere Elemente werden geladen...",
   login: "Log in",
+  m2m: "m:n-Beziehung (M2M)",
+  m2o: "n:1-Beziehung (M2O)",
+  o2m: "1:n-Beziehung (O2M)",
   name: "Name",
   name_field: "Gib diesem {field}-Feld einen Namen und konfiguriere es.",
   navigate_changes:
@@ -251,14 +261,19 @@ export default {
   project_info_copy:
     "Nachfolgend ein paar Fragen zu deinem Projekt, sowie die Anmeldedaten für deinen ersten Administrator.",
   read: "Lesen",
-  read_blacklist: "Blacklist Lesen",
-  read_blacklist_copy: "Bitte wähle die Felder, die der Benutzer sehen kann.",
+  readable_fields: "Lesbare Felder",
+  readable_fields_copy: "Wähle die Felder aus, die der User sehen kann",
   readonly: "Lesezugriff",
   regex: "RegEx",
   related_entries: "Ähnliche Einträge vorhanden",
   remove: "Löschen",
   remove_related: "Ähnlichen Eintrag löschen",
   relationship: "Beziehung",
+  relationship_setup:
+    "Für dieses Beziehungsfeld müssen die verknüpften Felder abgebildet werden.",
+  relationship_setup_copy:
+    "Es gibt unterschiedliche Type relationaler Daten. Dieses Feld benutzt: {relationship}",
+  related_collection: "Verknüpfte Kollektion",
   required: "Erforderlich",
   reset_preferences: "Alle Listeneinstellungen zurücksetzen",
   reset_password: "Passwort zurücksetzen",
@@ -271,6 +286,8 @@ export default {
   save_and_add: "Speichern und neu hinzufügen",
   save_and_stay: "Speichern und Bleiben",
   save_as_copy: "Als Kopie speichern",
+  save_and_explain: "Mit Erklärung speichern",
+  save_and_explain_copy: "Bitte beschreibe die Änderungen",
   save_as_bookmark: "Als Bookmark speichern",
   schema: "Schema",
   search: "Suche",
@@ -307,6 +324,7 @@ export default {
   sign_out_confirm_edits:
     "Bist Du sicher, dass Du Dich ausloggen möchtest? Alle ungespeicherten Änderungen gehen dabei verloren.",
   to: "An",
+  this_collection: "Diese Kollektion",
   unsaved_changes_copy:
     "Es gibt ungespeicherte Änderungen! Bist Du sicher, dass Du diese Seite verlassen möchtest?",
   user_directory: "Benutzerverzeichnis",
@@ -322,7 +340,7 @@ export default {
   version: "Version",
   version_and_updates: "Version und Updates",
   view_type: "Ansehen als...",
-  write_blacklist: "Blacklist schreiben",
-  write_blacklist_copy: "Wähle die Felder aus, die der User bearbeiten darf.",
+  writable_fields: "Beschreibbare Felder",
+  write_fields_copy: "Wähle die Felder aus, die der User bearbeiten darf.",
   yes: "Ja"
 };
