@@ -541,8 +541,9 @@ export default {
         this.$api.getActivity({
           "filter[collection][eq]": this.collection,
           "filter[item][eq]": this.primaryKey,
-          fields: "id,action,datetime,comment,user.first_name,user.last_name",
-          sort: "-datetime"
+          fields:
+            "id,action,action_on,comment,action_by.first_name,action_by.last_name",
+          sort: "-action_on"
         }),
         this.$api.getItemRevisions(this.collection, this.primaryKey)
       ])
@@ -556,8 +557,10 @@ export default {
         .then(({ activity, revisions }) => {
           return {
             activity: activity.map(act => {
-              const date = new Date(act.datetime);
-              const name = `${act.user.first_name} ${act.user.last_name}`;
+              const date = new Date(act.action_on);
+              const name = `${act.action_by.first_name} ${
+                act.action_by.last_name
+              }`;
               return {
                 id: act.id,
                 date,
@@ -590,7 +593,7 @@ export default {
 
       this.$api
         .getUsers({
-          "filter[last_access][gte]": date,
+          "filter[last_access_on][gte]": date,
           "filter[last_page][eq]": path,
           "filter[id][neq]": this.$store.state.currentUser.id
         })
