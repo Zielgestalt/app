@@ -147,6 +147,34 @@ import VNotFound from "./not-found.vue";
 import store from "../store/";
 import api from "../api";
 
+function getFieldsQuery(collection) {
+  const fields = store.state.collections[collection].fields;
+
+  return Object.values(fields)
+    .map(field => field.field)
+    .map(field => {
+      const fieldInfo = fields[field];
+
+      if (
+        fieldInfo.type.toLowerCase() === "o2m" &&
+        store.getters.o2m(collection, field).junction != null
+      ) {
+        return field.endsWith(".*.*") ? field : field + ".*.*";
+      }
+
+      if (
+        fieldInfo.type.toLowerCase() === "m2o" ||
+        fieldInfo.type.toLowerCase() === "o2m" ||
+        fieldInfo.type.toLowerCase() === "m2m"
+      ) {
+        return field.endsWith(".*") ? field : field + ".*";
+      }
+
+      return field;
+    })
+    .join(",");
+}
+
 export default {
   name: "edit",
   metaInfo() {
@@ -621,7 +649,7 @@ export default {
 
           return Promise.all([
             this.$api.getItem(this.collection, this.primaryKey, {
-              fields: "*.*"
+              fields: getFieldsQuery(this.collection)
             }),
             this.fetchActivity()
           ]);
@@ -667,7 +695,7 @@ export default {
     store.dispatch("loadingStart", { id });
 
     return api
-      .getItem(collection, primaryKey, { fields: "*.*" })
+      .getItem(collection, primaryKey, { fields: getFieldsQuery(collection) })
       .then(res => res.data)
       .then(item => {
         store.dispatch("loadingFinished", id);
@@ -712,7 +740,9 @@ export default {
     this.$store.dispatch("loadingStart", { id });
 
     return this.$api
-      .getItem(collection, primaryKey, { fields: "*.*" })
+      .getItem(collection, primaryKey, {
+        fields: getFieldsQuery(this.collection)
+      })
       .then(res => res.data)
       .then(item => {
         this.$store.dispatch("loadingFinished", id);

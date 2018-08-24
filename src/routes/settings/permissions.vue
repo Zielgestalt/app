@@ -30,14 +30,16 @@
       </template>
 
     </v-header>
-    <h2 class="style-1">{{ $t("permissions") }}</h2>
 
-    <v-permissions
-      :loading="!(permissions && statuses)"
-      :permissions="permissions"
-      :statuses="statuses"
-      :fields="permissionFields"
-      @input="setPermission" />
+    <template v-if="$route.params.id != 1">
+      <h2 class="style-1">{{ $t("permissions") }}</h2>
+      <v-permissions
+        :loading="!(permissions && statuses)"
+        :permissions="permissions"
+        :statuses="statuses"
+        :fields="permissionFields"
+        @input="setPermission" />
+    </template>
 
     <h2 class="style-1">{{ $t("role_settings") }}</h2>
     <v-form

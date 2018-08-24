@@ -59,13 +59,14 @@
 
       </div>
     </div>
-    <div class="body" :class="{ loading }">
+    <div class="body" :class="{ loading, dragging }">
       <div v-if="loading && items.length === 0" class="loader">
         <div v-for="n in 50" :key="n" class="row" :style="{ height: rowHeight + 'px' }" />
       </div>
       <component
         :is="manualSorting ? 'draggable' : 'div'"
         v-model="itemsManuallySorted"
+        @start="startSort"
         @end="saveSort">
         <template v-if="link">
           <div
@@ -234,6 +235,7 @@ export default {
       windowHeight: 0,
       scrolled: false,
 
+      dragging: false,
       manualSorting: false,
       itemsManuallySorted: []
     };
@@ -385,7 +387,11 @@ export default {
       this.updateSort(this.manualSortField, "asc");
       this.manualSorting = true;
     },
+    startSort() {
+      this.dragging = true;
+    },
     saveSort() {
+      this.dragging = false;
       if (
         this.itemsManuallySorted.some(row => row[this.manualSortField] == null)
       ) {
@@ -498,6 +504,10 @@ export default {
   cursor: pointer;
 }
 
+.dragging .row.link:hover {
+  background-color: var(--white);
+}
+
 .row.selected {
   background-color: var(--highlight);
 }
@@ -582,6 +592,29 @@ export default {
     cursor: -webkit-grab;
     color: var(--gray);
   }
+}
+
+.sortable-chosen {
+  background-color: rgba(255, 255, 255, 0) !important;
+  border: none;
+}
+
+// You can't change the opacity of a draggable=true element, so we change the children
+.sortable-chosen * {
+  opacity: 0 !important;
+}
+
+.dragging .sortable-chosen {
+  background-color: var(--highlight) !important;
+  color: var(--accent);
+  border-bottom: 1px solid var(--lightest-gray);
+  .manual-sort {
+    color: var(--accent);
+  }
+}
+
+.dragging .sortable-chosen * {
+  opacity: 1 !important;
 }
 
 .loader {

@@ -326,6 +326,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Material Icons";
+  src: url("./fonts/material-icons.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
 ::selection {
   background: #e1f0fa;
 }

@@ -412,8 +412,12 @@ export default {
       }
     },
     install(info) {
+      const parts = this.url.split("/");
+      parts.pop() || parts.pop();
+      const newUrl = parts.join("/");
+
       this.$axios
-        .post(this.url + "/instances", info)
+        .post(newUrl + "/instances", info)
         .then(() => {
           this.installing = false;
           this.exists = true;

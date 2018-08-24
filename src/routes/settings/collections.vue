@@ -107,7 +107,7 @@ export default {
           color: "warning"
         },
         {
-          name: this.$t("collections"),
+          name: this.$t("collections_and_fields"),
           path: "/settings/collections"
         }
       ];

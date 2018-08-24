@@ -15,11 +15,12 @@
         <section class="content">
           <project-switcher />
           <nav-menu
-            v-if="collectionNames && collectionNames.length > 0"
+            v-if="collections && collections.length > 0"
             :title="$t('collections')"
-            :links="collectionNames.map(name => ({
-              path: `/collections/${name}`,
-              name: $t(`collections-${name}`)
+            :links="collections.map(({ collection, icon }) => ({
+              path: `/collections/${collection}`,
+              name: $t(`collections-${collection}`),
+              icon
             }))" />
           <nav-menu
             v-if="extensions"
@@ -53,10 +54,15 @@ export default {
     VBlocker
   },
   computed: {
-    collectionNames() {
-      if (this.collections == null) return [];
+    permissions() {
+      return this.$store.state.permissions;
+    },
+    collections() {
+      const collections = this.$store.state.collections;
 
-      return Object.values(this.collections)
+      if (collections == null) return [];
+
+      return Object.values(collections)
         .filter(
           collection =>
             collection.hidden == false &&
@@ -72,14 +78,7 @@ export default {
           }
 
           return this.permissions[collection.collection].read !== "none";
-        })
-        .map(collection => collection.collection);
-    },
-    permissions() {
-      return this.$store.state.permissions;
-    },
-    collections() {
-      return this.$store.state.collections;
+        });
     },
     bookmarks() {
       return this.$store.state.bookmarks;
