@@ -66,6 +66,7 @@
       <component
         :is="manualSorting ? 'draggable' : 'div'"
         v-model="itemsManuallySorted"
+        :options="{ handle: '.manual-sort' }"
         @start="startSort"
         @end="saveSort">
         <template v-if="link">
@@ -594,27 +595,18 @@ export default {
   }
 }
 
-.sortable-chosen {
-  background-color: rgba(255, 255, 255, 0) !important;
-  border: none;
+.sortable-drag {
+  opacity: 0;
 }
 
-// You can't change the opacity of a draggable=true element, so we change the children
-.sortable-chosen * {
-  opacity: 0 !important;
-}
-
-.dragging .sortable-chosen {
+.dragging .sortable-chosen,
+.sortable-chosen:active {
   background-color: var(--highlight) !important;
   color: var(--accent);
-  border-bottom: 1px solid var(--lightest-gray);
+
   .manual-sort {
     color: var(--accent);
   }
-}
-
-.dragging .sortable-chosen * {
-  opacity: 1 !important;
 }
 
 .loader {

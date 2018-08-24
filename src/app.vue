@@ -16,6 +16,14 @@
       color="warning" />
   </div>
 
+  <div v-else-if="extensionError" class="error">
+    <v-error
+      icon="extension"
+      :title="$t('extensions_missing')"
+      :body="$t('extensions_missing_copy')"
+      color="warning" />
+  </div>
+
   <div v-else-if="!publicRoute">
     <div v-if="hydrated" class="directus">
       <v-nav-sidebar />
@@ -58,6 +66,18 @@ export default {
     },
     configError() {
       return window.__DirectusConfig__ == null;
+    },
+    extensionError() {
+      if (!this.hydrated) return null;
+
+      const extensions = this.$store.state.extensions;
+      if (
+        Object.values(extensions.interfaces).length === 0 &&
+        Object.values(extensions.layouts).length === 0 &&
+        Object.values(extensions.pages).length === 0
+      ) {
+        return true;
+      }
     }
   },
   watch: {

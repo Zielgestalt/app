@@ -52,7 +52,7 @@
 
                 <slot v-else />
               </div>
-              <div class="footer">
+              <div class="footer" :class="{ 'action-required': actionRequired }">
                 <button
                   v-if="!actionRequired"
                   @click="$emit('close')">{{ $t('cancel') }}</button>
@@ -184,6 +184,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .footer.action-required {
+    justify-content: flex-end;
   }
 
   header {

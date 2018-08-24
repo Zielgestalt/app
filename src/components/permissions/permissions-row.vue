@@ -212,8 +212,8 @@
         action-required>
         <form @submit.prevent class="modal-content">
           <fieldset>
-            <legend class="style-3">{{ $t('read_blacklist') }}</legend>
-            <p class="style-4">{{ $t('read_blacklist_copy') }}</p>
+            <legend class="style-3">{{ $t('readable_fields') }}</legend>
+            <p class="style-4">{{ $t('readable_fields_copy') }}</p>
             <v-checkbox
               v-for="(field, name) in fields"
               :key="`${permissionName}-read-${name}`"
@@ -224,8 +224,8 @@
               @change="toggleField(name)" />
           </fieldset>
           <fieldset>
-            <legend class="style-3">{{ $t('write_blacklist') }}</legend>
-            <p class="style-4">{{ $t('write_blacklist_copy') }}</p>
+            <legend class="style-3">{{ $t('writable_fields') }}</legend>
+            <p class="style-4">{{ $t('writable_fields_copy') }}</p>
             <v-checkbox
               v-for="(field, name) in fields"
               :key="`${permissionName}-write-${name}`"
@@ -246,7 +246,7 @@
         action-required>
         <form class="modal-content" @submit.prevent>
           <fieldset>
-            <legend class="style-3">{{ $t('select_statuses') }}</legend>
+            <legend class="style-3">{{ $t('allowed_statuses') }}</legend>
             <p class="style-4">{{ $t('select_statuses_copy') }}</p>
             <v-checkbox
               v-for="(status, name) in statuses"
