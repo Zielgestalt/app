@@ -51,7 +51,7 @@ export default {
   choose_project: "Project auswählen",
   choose_interface:
     "Wähle einen Feldtyp über den die Daten gepflegt werden sollen.",
-  click_to_toggle_all_none: "Klicken um die ganze Spalte an- und auszuschalten",
+  click_to_toggle_all_none: "Klicken um die ganze Spalte ein- und auszublenden",
   connection: "Verbindung",
   collection: "Kollektion",
   collections_and_fields: "Kollektionen & Felder",
