@@ -42,15 +42,11 @@ export default {
   summary {
     border-top: 1px solid var(--lighter-gray);
     border-bottom: 1px solid var(--lighter-gray);
-    padding: 10px 0;
     margin-bottom: 20px;
     font-size: 18px;
     color: var(--gray);
     list-style-type: none;
     font-weight: 400;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     cursor: pointer;
     transition: var(--fast) var(--transition);
 
@@ -77,6 +73,9 @@ export default {
       -webkit-font-feature-settings: "liga";
       -webkit-font-smoothing: antialiased;
       transition: var(--fast) var(--transition);
+      width: 24px;
+      height: 24px;
+      float: right;
     }
 
     &::-webkit-details-marker {
@@ -113,10 +112,6 @@ export default {
   }
 
   &[open] {
-    summary {
-      // border-bottom: 1px solid var(--lighter-gray);
-    }
-
     summary::after {
       transform: rotate(90deg);
     }
